@@ -3,165 +3,199 @@ const data = {
         {
             en: "apple juice",
             es: "jugo de manzana",
-            url: "pics/apple-juice.png"
+            url: "./assets/data/pics/apple-juice.png"
         },
 
         {
             en: "apple",
             es: "manzana",
-            url: "pics/apple.png"
+            url: "./assets/data/pics/apple.png"
         },
 
         {
             en: "banana",
             es: "plátano",
-            url: "pics/banana.png"
+            url: "./assets/data/pics/banana.png"
         },
 
         {
             en: "bread",
             es: "pan",
-            url: "pics/bread.png"
+            url: "./assets/data/pics/bread.png"
         },
 
         {
             en: "carrots",
             es: "zanahoria",
-            url: "pics/carrots.png"
+            url: "./assets/data/pics/carrots.png"
         },
 
         {
             en: "cheese",
             es: "queso",
-            url: "pics/cheese.jpg"
+            url: "./assets/data/pics/cheese.jpg"
         },
 
         {
             en: "chicken",
             es: "pollo",
-            url: "pics/chicken.png"
+            url: "./assets/data/pics/chicken.png"
         },
 
         {
             en: "corn",
             es: "maíz",
-            url: "pics/corn.png"
+            url: "./assets/data/pics/corn.png"
         },
 
         {
             en: "eggs",
             es: "huevos",
-            url: "pics/eggs.png"
+            url: "./assets/data/pics/eggs.png"
         },
 
         {
             en: "fish",
             es: "pescado",
-            url: "pics/fish.png"
+            url: "./assets/data/pics/fish.png"
         },
 
         {
             en: "french fries",
             es: "papas fritas",
-            url: "pics/fries.gif"
+            url: "./assets/data/pics/fries.gif"
         },
 
         {
             en: "grapes",
             es: "uvas",
-            url: "pics/grapes.png"
+            url: "./assets/data/pics/grapes.png"
         },
 
         {
             en: "ice cream",
             es: "helado",
-            url: "pics/icecream.png"
+            url: "./assets/data/pics/icecream.png"
         },
 
         {
             en: "lettuce",
             es: "lechuga",
-            url: "pics/lettuce.png"
+            url: "./assets/data/pics/lettuce.png"
         },
 
         {
             en: "lobster",
             es: "langosta",
-            url: "pics/lobster.png"
+            url: "./assets/data/pics/lobster.png"
         },
 
         {
             en: "milk",
             es: "leche",
-            url: "pics/milk.png"
+            url: "./assets/data/pics/milk.png"
         },
 
         {
             en: "orange juice",
             es: "jugo de naranja",
-            url: "pics/orange-juice.png"
+            url: "./assets/data/pics/orange-juice.png"
         },
 
         {
             en: "orange",
             es: "naranja",
-            url: "pics/orange.png"
+            url: "./assets/data/pics/orange.png"
         },
 
         {
             en: "potato",
             es: "papas",
-            url: "pics/potato.png"
+            url: "./assets/data/pics/potato.png"
         },
 
         {
             en: "rice",
             es: "arroz",
-            url: "pics/rice.png"
+            url: "./assets/data/pics/rice.png"
         },
 
         {
             en: "salad",
             es: "ensalada",
-            url: "pics/salad.png"
+            url: "./assets/data/pics/salad.png"
         },
 
         {
             en: "soup",
             es: "sopa",
-            url: "pics/soup.png"
+            url: "./assets/data/pics/soup.png"
         },
 
         {
             en: "tomato",
             es: "tomate",
-            url: "pics/tomato.png"
+            url: "./assets/data/pics/tomato.png"
         },
 
         {
             en: "turkey",
             es: "pavo",
-            url: "pics/turkey.png"
+            url: "./assets/data/pics/turkey.png"
         },
 
         {
             en: "water",
             es: "agua",
-            url: "pics/water.png"
+            url: "./assets/data/pics/water.png"
         }],
 }
 
 const game = {
 
-    language: 'es',
-    category: null,
+    languages: ['English', 'Español'],
+    chosenLanguage: null,
+    categories: ['Food', 'School Supplies'],
+    chosenCategory: null,
     unshuffled : [],
     shuffled : [],
     currentIdx : 0,
 
+    welcome : function(){
+
+        // make language select
+        const languageSelect = $('<div>').addClass('dropdown');
+        const langBtn = $('<button>').addClass('btn btn-primary dropdown-toggle').attr('type', 'button').attr('id', 'language-dropdown-btn').attr('data-toggle', 'dropdown').text('Choose Language');
+        $(languageSelect).append(langBtn);
+        const langMenu = $('<div>').addClass('dropdown-menu');
+        game.languages.forEach(function (language) {
+            let langOption = $('<a>').addClass('dropdown-item').text(language);
+            $(langMenu).append(langOption)
+        });
+        $(languageSelect).append(langMenu);
+        $('#card').append(languageSelect);
+
+        // make category select
+        const categorySelect = $('<div>').addClass('dropdown');
+        const catBtn = $('<button>').addClass('btn btn-primary dropdown-toggle').attr('type', 'button').attr('id', 'category-dropdown-btn').attr('data-toggle', 'dropdown').text('Choose Category');
+        $(categorySelect).append(catBtn);
+        const catMenu = $('<div>').addClass('dropdown-menu');
+        game.categories.forEach(function (category) {
+            let catOption = $('<a>').addClass('dropdown-item').text(category);
+            $(catMenu).append(catOption)
+        });
+        $(categorySelect).append(catMenu);
+        $('#card').append(categorySelect);
+
+
+
+        // $('#board').append(welcomeMsg);
+    },
+
     start : function(){
         game.unshuffled = data.food;
         game.shuffle();
+        game.buildCard();
     },
 
     shuffle : function(){
@@ -173,7 +207,6 @@ const game = {
             game.shuffled.push(game.unshuffled[randIdx]);
             game.unshuffled.splice(randIdx, 1);
         }
-        console.log(game.shuffled);
     },
 
     getNext : function(){
@@ -194,15 +227,14 @@ const game = {
             dataType: "jsonp",
             type: "jsonp",
             success: function (data) {
-                console.log(data)
 
-                const name = data.items[0].word;
+                const word = data.items[0].word;
                 const country = data.items[0].country;
                 const mp3 = data.items[0].pathmp3;
                 const ogg = data.items[0].pathogg;
                 const username = data.items[0].username;
                 const text = `User ${username} is from: ${country}`
-                console.log(text)
+                console.log(word, text)
 
                 $("#speaker-text").html(text);
 
@@ -218,14 +250,19 @@ const game = {
                 console.log("error");
             }
         }); //end ajax call
-    } //end aJax fx
+    }, //end forvo fx
 
+    buildCard : function(){
+        game.shuffled.forEach(function(item){
+            let square = $('<img>').addClass('square').attr('src', item.url);
+            $('#card').append(square);
+        });
+    },
     
 
 }
 
-game.start();
-game.forvo()
+game.welcome();
 
 // functions needed:
 // forvo = takes current word, makes api call, returns the sound file
