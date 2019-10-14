@@ -1,160 +1,163 @@
 const data = {
     food: [
         {
-            name: "apple juice",
-            nombre: "jugo de manzana",
+            en: "apple juice",
+            es: "jugo de manzana",
             url: "pics/apple-juice.png"
         },
 
         {
-            name: "apple",
-            nombre: "manzana",
+            en: "apple",
+            es: "manzana",
             url: "pics/apple.png"
         },
 
         {
-            name: "banana",
-            nombre: "plátano",
+            en: "banana",
+            es: "plátano",
             url: "pics/banana.png"
         },
 
         {
-            name: "bread",
-            nombre: "pan",
+            en: "bread",
+            es: "pan",
             url: "pics/bread.png"
         },
 
         {
-            name: "carrots",
-            nombre: "zanahoria",
+            en: "carrots",
+            es: "zanahoria",
             url: "pics/carrots.png"
         },
 
         {
-            name: "cheese",
-            nombre: "queso",
+            en: "cheese",
+            es: "queso",
             url: "pics/cheese.jpg"
         },
 
         {
-            name: "chicken",
-            nombre: "pollo",
+            en: "chicken",
+            es: "pollo",
             url: "pics/chicken.png"
         },
 
         {
-            name: "corn",
-            nombre: "maíz",
+            en: "corn",
+            es: "maíz",
             url: "pics/corn.png"
         },
 
         {
-            name: "eggs",
-            nombre: "huevos",
+            en: "eggs",
+            es: "huevos",
             url: "pics/eggs.png"
         },
 
         {
-            name: "fish",
-            nombre: "pescado",
+            en: "fish",
+            es: "pescado",
             url: "pics/fish.png"
         },
 
         {
-            name: "french fries",
-            nombre: "papas fritas",
+            en: "french fries",
+            es: "papas fritas",
             url: "pics/fries.gif"
         },
 
         {
-            name: "grapes",
-            nombre: "uvas",
+            en: "grapes",
+            es: "uvas",
             url: "pics/grapes.png"
         },
 
         {
-            name: "ice cream",
-            nombre: "helado",
+            en: "ice cream",
+            es: "helado",
             url: "pics/icecream.png"
         },
 
         {
-            name: "lettuce",
-            nombre: "lechuga",
+            en: "lettuce",
+            es: "lechuga",
             url: "pics/lettuce.png"
         },
 
         {
-            name: "lobster",
-            nombre: "langosta",
+            en: "lobster",
+            es: "langosta",
             url: "pics/lobster.png"
         },
 
         {
-            name: "milk",
-            nombre: "leche",
+            en: "milk",
+            es: "leche",
             url: "pics/milk.png"
         },
 
         {
-            name: "orange juice",
-            nombre: "jugo de naranja",
+            en: "orange juice",
+            es: "jugo de naranja",
             url: "pics/orange-juice.png"
         },
 
         {
-            name: "orange",
-            nombre: "naranja",
+            en: "orange",
+            es: "naranja",
             url: "pics/orange.png"
         },
 
         {
-            name: "potato",
-            nombre: "papas",
+            en: "potato",
+            es: "papas",
             url: "pics/potato.png"
         },
 
         {
-            name: "rice",
-            nombre: "arroz",
+            en: "rice",
+            es: "arroz",
             url: "pics/rice.png"
         },
 
         {
-            name: "salad",
-            nombre: "ensalada",
+            en: "salad",
+            es: "ensalada",
             url: "pics/salad.png"
         },
 
         {
-            name: "soup",
-            nombre: "sopa",
+            en: "soup",
+            es: "sopa",
             url: "pics/soup.png"
         },
 
         {
-            name: "tomato",
-            nombre: "tomate",
+            en: "tomato",
+            es: "tomate",
             url: "pics/tomato.png"
         },
 
         {
-            name: "turkey",
-            nombre: "pavo",
+            en: "turkey",
+            es: "pavo",
             url: "pics/turkey.png"
         },
 
         {
-            name: "water",
-            nombre: "agua",
+            en: "water",
+            es: "agua",
             url: "pics/water.png"
         }],
 }
 
 const game = {
 
+    language: 'es',
+    category: null,
     unshuffled : [],
     shuffled : [],
+    currentIdx : 0,
 
     start : function(){
         game.unshuffled = data.food;
@@ -173,9 +176,56 @@ const game = {
         console.log(game.shuffled);
     },
 
+    getNext : function(){
+        return game.shuffled[game.currentIdx][game.language];
+    },
+
+    forvo : function(){
+        const called = game.getNext();
+        const lang = game.language;
+        const key = 'a1947295bd2a7535393c3c3df3d666b0'
+        const url = 'https://apifree.forvo.com/key/' + key + '/format/json/callback/pronounce/action/word-pronunciations/word/' + encodeURI(called) + '/language/' + lang + "/order/rate-desc";
+        
+        $.ajax({
+            url: url,
+            type: 'GET',
+            headers: { 'Access-Control-Allow-Origin': '*' },
+            jsonpCallback: "pronounce",
+            dataType: "jsonp",
+            type: "jsonp",
+            success: function (data) {
+                console.log(data)
+
+                const name = data.items[0].word;
+                const country = data.items[0].country;
+                const mp3 = data.items[0].pathmp3;
+                const ogg = data.items[0].pathogg;
+                const username = data.items[0].username;
+                const text = `User ${username} is from: ${country}`
+                console.log(text)
+
+                $("#speaker-text").html(text);
+
+                $("#audio").html(`
+                    <audio autoplay>
+                        <source src="${ogg}" type="audio/ogg">
+                        <source src="${mp3}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio> `
+                )
+            },
+            error: function () {
+                console.log("error");
+            }
+        }); //end ajax call
+    } //end aJax fx
+
+    
+
 }
 
 game.start();
+game.forvo()
 
 // functions needed:
 // forvo = takes current word, makes api call, returns the sound file
