@@ -159,6 +159,7 @@ const game = {
 
     languages: ['English', 'Español'],
     chosenLanguage: null,
+    languageCode: null,
     categories: ['Food', 'School Supplies'],
     chosenCategory: null,
     unshuffled : [],
@@ -204,6 +205,8 @@ const game = {
         game.unshuffled = data[game.chosenCategory];
         game.shuffle();
         game.buildCard();
+        const startBtn = $('<button>').addClass('btn btn-primary').attr('type', 'button').attr('id', 'start-game').text('Start');
+        $('#board').append(startBtn);
     },
 
     shuffle : function(){
@@ -218,12 +221,13 @@ const game = {
     },
 
     getNext : function(){
-        return game.shuffled[game.currentIdx][game.language];
+        return game.shuffled[game.currentIdx][game.languageCode];
     },
 
     forvo : function(){
         const called = game.getNext();
-        const lang = game.chosenLanguage;
+        console.log(called);
+        const lang = game.languageCode;
         const key = 'a1947295bd2a7535393c3c3df3d666b0'
         const url = 'https://apifree.forvo.com/key/' + key + '/format/json/callback/pronounce/action/word-pronunciations/word/' + encodeURI(called) + '/language/' + lang + "/order/rate-desc";
         
@@ -263,17 +267,18 @@ const game = {
     buildCard : function(){
         $('#card').empty();
         $('#board').empty();
-        game.shuffled.forEach(function(item){
-            let languageCode;
-            if(game.chosenLanguage === 'English'){
-                languageCode = 'en';
-            } else if(game.chosenLanguage === 'Español'){
-                languageCode = 'es';
-            }
 
-            console.log(languageCode)
+        game.languageCode = game.chosenLanguage.substring(0, 2).toLowerCase(); // this works for most languages
+
+        game.shuffled.forEach(function(item){
+
+            // if(game.chosenLanguage === 'English'){
+            //     languageCode = 'en';
+            // } else if(game.chosenLanguage === 'Español'){
+            //     languageCode = 'es';
+            // }
             
-            let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[languageCode]);
+            let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[game.languageCode]);
             $('#card').append(square);
         });
     },
@@ -293,6 +298,13 @@ $(document).on('click', '#submit-options', function(){
     game.chosenCategory = $('#category').children().val();
     game.start();
 });
+
+$(document).on('click', '#start-game', function(){
+    console.log('start');
+    game.forvo();
+});
+
+
 
 game.welcome();
 
