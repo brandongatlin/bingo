@@ -1,5 +1,5 @@
 const data = {
-    food: [
+    Food: [
         {
             en: "apple juice",
             es: "jugo de manzana",
@@ -149,6 +149,10 @@ const data = {
             es: "agua",
             url: "./assets/data/pics/water.png"
         }],
+
+        School_Supplies : [
+
+        ]
 }
 
 const game = {
@@ -164,36 +168,40 @@ const game = {
     welcome : function(){
 
         // make language select
-        const languageSelect = $('<div>').addClass('dropdown');
+        const languageSelect = $('<div>').addClass('dropdown test').attr('id', 'language');
         const langBtn = $('<button>').addClass('btn btn-primary dropdown-toggle').attr('type', 'button').attr('id', 'language-dropdown-btn').attr('data-toggle', 'dropdown').text('Choose Language');
         $(languageSelect).append(langBtn);
         const langMenu = $('<div>').addClass('dropdown-menu');
         game.languages.forEach(function (language) {
-            let langOption = $('<a>').addClass('dropdown-item').text(language);
+            let langOption = $('<a>').addClass('dropdown-item').text(language).val(language);
             $(langMenu).append(langOption)
         });
         $(languageSelect).append(langMenu);
         $('#card').append(languageSelect);
 
         // make category select
-        const categorySelect = $('<div>').addClass('dropdown');
+        const categorySelect = $('<div>').addClass('dropdown').attr('id', 'category');
         const catBtn = $('<button>').addClass('btn btn-primary dropdown-toggle').attr('type', 'button').attr('id', 'category-dropdown-btn').attr('data-toggle', 'dropdown').text('Choose Category');
         $(categorySelect).append(catBtn);
         const catMenu = $('<div>').addClass('dropdown-menu');
         game.categories.forEach(function (category) {
-            let catOption = $('<a>').addClass('dropdown-item').text(category);
+            let catOption = $('<a>').addClass('dropdown-item').text(category.replace("_", " ")).val(category);
             $(catMenu).append(catOption)
         });
         $(categorySelect).append(catMenu);
         $('#card').append(categorySelect);
 
+        //
+        const submitBtn = $('<button>').addClass('btn btn-primary').attr('type', 'button').attr('id', 'submit-options').text('Submit');
+        $('#card').append(submitBtn);
 
 
-        // $('#board').append(welcomeMsg);
+        const welcomeMsg = $('<h1>').text('Welcome for Forvo Listening Bingo!');
+        $('#board').append(welcomeMsg);
     },
 
     start : function(){
-        game.unshuffled = data.food;
+        game.unshuffled = data[game.chosenCategory];
         game.shuffle();
         game.buildCard();
     },
@@ -215,7 +223,7 @@ const game = {
 
     forvo : function(){
         const called = game.getNext();
-        const lang = game.language;
+        const lang = game.chosenLanguage;
         const key = 'a1947295bd2a7535393c3c3df3d666b0'
         const url = 'https://apifree.forvo.com/key/' + key + '/format/json/callback/pronounce/action/word-pronunciations/word/' + encodeURI(called) + '/language/' + lang + "/order/rate-desc";
         
@@ -253,8 +261,19 @@ const game = {
     }, //end forvo fx
 
     buildCard : function(){
+        $('#card').empty();
+        $('#board').empty();
         game.shuffled.forEach(function(item){
-            let square = $('<img>').addClass('square').attr('src', item.url);
+            let languageCode;
+            if(game.chosenLanguage === 'English'){
+                languageCode = 'en';
+            } else if(game.chosenLanguage === 'Español'){
+                languageCode = 'es';
+            }
+
+            console.log(languageCode)
+            
+            let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[languageCode]);
             $('#card').append(square);
         });
     },
@@ -262,7 +281,21 @@ const game = {
 
 }
 
+$(document).on('click', '.dropdown-item', function(){
+    // set text and value of dropdown so the user can see what they selected
+    const value = $(this).text();
+    $(this).parent().siblings().text(value);
+    $(this).parent().siblings().val(value);
+});
+
+$(document).on('click', '#submit-options', function(){
+    game.chosenLanguage = $('#language').children().val();
+    game.chosenCategory = $('#category').children().val();
+    game.start();
+});
+
 game.welcome();
+
 
 // functions needed:
 // forvo = takes current word, makes api call, returns the sound file
