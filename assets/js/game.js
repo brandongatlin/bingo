@@ -164,6 +164,8 @@ const game = {
     chosenCategory: null,
     unshuffled : [],
     shuffled : [],
+    orderToCall : [],
+    called : null,
     currentIdx : 0,
 
     welcome : function(){
@@ -218,18 +220,24 @@ const game = {
             game.shuffled.push(game.unshuffled[randIdx]);
             game.unshuffled.splice(randIdx, 1);
         }
+
+        for (let i = 0; i < origLength; i++) {
+            let randIdx = Math.floor(Math.random() * game.shuffled.length);
+            game.orderToCall.push(game.shuffled[randIdx]);
+        }
+
     },
 
     getNext : function(){
-        return game.shuffled[game.currentIdx][game.languageCode];
+        return game.orderToCall[game.currentIdx][game.languageCode];
     },
 
     forvo : function(){
-        const called = game.getNext();
-        console.log(called);
+        game.called = game.getNext();
+        console.log(game.called);
         const lang = game.languageCode;
         const key = 'a1947295bd2a7535393c3c3df3d666b0'
-        const url = 'https://apifree.forvo.com/key/' + key + '/format/json/callback/pronounce/action/word-pronunciations/word/' + encodeURI(called) + '/language/' + lang + "/order/rate-desc";
+        const url = 'https://apifree.forvo.com/key/' + key + '/format/json/callback/pronounce/action/word-pronunciations/word/' + encodeURI(game.called) + '/language/' + lang + "/order/rate-desc";
         
         $.ajax({
             url: url,
@@ -246,7 +254,7 @@ const game = {
                 const ogg = data.items[0].pathogg;
                 const username = data.items[0].username;
                 const text = `User ${username} is from: ${country}`
-                console.log(word, text)
+                // console.log(word, text)
 
                 $("#speaker-text").html(text);
 
@@ -269,15 +277,13 @@ const game = {
         $('#board').empty();
 
         game.languageCode = game.chosenLanguage.substring(0, 2).toLowerCase(); // this works for most languages
-
-        game.shuffled.forEach(function(item){
-
             // if(game.chosenLanguage === 'English'){
             //     languageCode = 'en';
             // } else if(game.chosenLanguage === 'Español'){
             //     languageCode = 'es';
             // }
-            
+
+        game.shuffled.forEach(function(item){
             let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[game.languageCode]);
             $('#card').append(square);
         });
@@ -300,8 +306,14 @@ $(document).on('click', '#submit-options', function(){
 });
 
 $(document).on('click', '#start-game', function(){
-    console.log('start');
     game.forvo();
+    $('#board').empty();
+});
+
+$(document).on('click', '.square', function(){
+    const guessedWorded = $(this).attr('data-value');
+    const calledWord = game.called;
+    console.log(guessedWorded, calledWord);
 });
 
 
