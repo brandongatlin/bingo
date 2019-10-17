@@ -234,7 +234,6 @@ const game = {
 
     forvo : function(){
         game.called = game.getNext();
-        console.log(game.called);
         const lang = game.languageCode;
         const key = 'a1947295bd2a7535393c3c3df3d666b0'
         const url = 'https://apifree.forvo.com/key/' + key + '/format/json/callback/pronounce/action/word-pronunciations/word/' + encodeURI(game.called) + '/language/' + lang + "/order/rate-desc";
@@ -248,13 +247,11 @@ const game = {
             type: "jsonp",
             success: function (data) {
 
-                const word = data.items[0].word;
                 const country = data.items[0].country;
                 const mp3 = data.items[0].pathmp3;
                 const ogg = data.items[0].pathogg;
                 const username = data.items[0].username;
                 const text = `User ${username} is from: ${country}`
-                // console.log(word, text)
 
                 $("#speaker-text").html(text);
 
@@ -311,23 +308,18 @@ $(document).on('click', '#start-game', function(){
 });
 
 $(document).on('click', '.square', function(){
-    const guessedWorded = $(this).attr('data-value');
-    const calledWord = game.called;
-    console.log(guessedWorded, calledWord);
+    const classList = $(this).attr('class').split(' ');
+
+    if(!classList.includes('disabledImg')){
+        const guessedWorded = $(this).attr('data-value');
+        const calledWord = game.called;
+
+        $(this).addClass('disabledImg');
+        console.log(guessedWorded, calledWord);
+    }
+    
 });
 
-
-
 game.welcome();
-
-
-// functions needed:
-// forvo = takes current word, makes api call, returns the sound file
-// buildCard = takes shuffled array and builds the card html, then writes to DOM
-// shuffle = shuffle array of pix
-// playNext - take forvo res, sorts, picks the best one, then plays it; repeats once after 4 seconds
-// getCategory
-// getLanguage
-// writeText - takes html id and text - writes
 
 
