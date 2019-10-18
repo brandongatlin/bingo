@@ -167,40 +167,22 @@ const game = {
     orderToCall : [],
     called : null,
     currentIdx : 0,
+    selected : [],
 
     welcome : function(){
 
-        // make language select
-        const languageSelect = $('<div>').addClass('dropdown test').attr('id', 'language');
-        const langBtn = $('<button>').addClass('btn btn-primary dropdown-toggle').attr('type', 'button').attr('id', 'language-dropdown-btn').attr('data-toggle', 'dropdown').text('Choose Language');
-        $(languageSelect).append(langBtn);
-        const langMenu = $('<div>').addClass('dropdown-menu');
         game.languages.forEach(function (language) {
-            let langOption = $('<a>').addClass('dropdown-item').text(language).val(language);
-            $(langMenu).append(langOption)
+            let langOption = $('<option>').addClass('dropdown-item').text(language).val(language);
+            $('#language-select').append(langOption)
         });
-        $(languageSelect).append(langMenu);
-        $('#card').append(languageSelect);
 
-        // make category select
-        const categorySelect = $('<div>').addClass('dropdown').attr('id', 'category');
-        const catBtn = $('<button>').addClass('btn btn-primary dropdown-toggle').attr('type', 'button').attr('id', 'category-dropdown-btn').attr('data-toggle', 'dropdown').text('Choose Category');
-        $(categorySelect).append(catBtn);
-        const catMenu = $('<div>').addClass('dropdown-menu');
         game.categories.forEach(function (category) {
-            let catOption = $('<a>').addClass('dropdown-item').text(category.replace("_", " ")).val(category);
-            $(catMenu).append(catOption)
+            let catOption = $('<option>').addClass('dropdown-item').text(category.replace("_", " ")).val(category);
+            $('#category-select').append(catOption)
         });
-        $(categorySelect).append(catMenu);
-        $('#card').append(categorySelect);
 
-        //
-        const submitBtn = $('<button>').addClass('btn btn-primary').attr('type', 'button').attr('id', 'submit-options').text('Submit');
-        $('#card').append(submitBtn);
-
-
-        const welcomeMsg = $('<h1>').text('Welcome for Forvo Listening Bingo!');
-        $('#board').append(welcomeMsg);
+        const choiceMsg = "Choose Your Options";
+        $('#message').text(choiceMsg);
     },
 
     start : function(){
@@ -234,6 +216,7 @@ const game = {
 
     forvo : function(){
         game.called = game.getNext();
+        console.log('called', game.called);
         const lang = game.languageCode;
         const key = 'a1947295bd2a7535393c3c3df3d666b0'
         const url = 'https://apifree.forvo.com/key/' + key + '/format/json/callback/pronounce/action/word-pronunciations/word/' + encodeURI(game.called) + '/language/' + lang + "/order/rate-desc";
@@ -280,25 +263,69 @@ const game = {
             //     languageCode = 'es';
             // }
 
-        game.shuffled.forEach(function(item){
-            let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[game.languageCode]);
+        game.shuffled.forEach(function(item, idx){
+            let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[game.languageCode]).attr('data-id', idx + 1);
             $('#card').append(square);
         });
     },
+
+    checkAnswer : function(choice, answer){
+        if(choice === answer){
+            return true;
+        }
+        return false;
+    },
+
+    gameWon : function(){
+        const winners = [
+            ['1', '2', '3', '4', '5'],
+            ['6', '7', '8', '9', '10'],
+            ['11', '12', '13', '14', '15'],
+            ['16', '17', '18', '19', '20'],
+            ['21', '22', '23', '24', '25'],
+            ['1', '6', '11', '16', '21'],
+            ['2', '7', '12', '17', '22'],
+            ['3', '8', '13', '18', '23'],
+            ['4', '9', '14', '19', '24'],
+            ['5', '10', '15', '20', '25'],
+            ['1', '7', '13', '19', '25'],
+            ['5', '9', '13', '17', '21']
+        ];
+
+        const possibleWinners = winners.length;
+
+        // Compare winners array to selected array for matches
+        for (let i = 0; i < possibleWinners; i++) {
+            let cellExists = 0;
+
+            for (var j = 0; j < 5; j++) {
+                if ($.inArray(winners[i][j], game.selected) > -1) {
+                    cellExists++;
+                }
+            }
+
+            // If all 5 winner cells exist in selected array alert success message
+            if (cellExists == 5) {
+                return true;
+            }
+            return false;
+
+        }
+    },
+
+    winner : function(){
+        alert('winner');
+    }
     
 
 }
 
-$(document).on('click', '.dropdown-item', function(){
-    // set text and value of dropdown so the user can see what they selected
-    const value = $(this).text();
-    $(this).parent().siblings().text(value);
-    $(this).parent().siblings().val(value);
-});
-
-$(document).on('click', '#submit-options', function(){
-    game.chosenLanguage = $('#language').children().val();
-    game.chosenCategory = $('#category').children().val();
+$('#submit-input').on('click', function(event){
+    event.preventDefault();
+    game.chosenLanguage = $('#language-select').val();
+    game.chosenCategory = $('#category-select').val();
+    console.log(game.chosenCategory, game.chosenLanguage);
+    $('#input-form').hide();
     game.start();
 });
 
@@ -311,11 +338,32 @@ $(document).on('click', '.square', function(){
     const classList = $(this).attr('class').split(' ');
 
     if(!classList.includes('disabledImg')){
-        const guessedWorded = $(this).attr('data-value');
+        const guessedWord = $(this).attr('data-value');
         const calledWord = game.called;
 
+        game.selected.push($(this).attr('data-id'));
+
         $(this).addClass('disabledImg');
-        console.log(guessedWorded, calledWord);
+        console.log(guessedWord, calledWord);
+
+        const result = game.checkAnswer(guessedWord, calledWord);
+        if(result){
+            $(this).addClass('right');
+        } else {
+            $(this).addClass('wrong');
+        }
+
+        const gameResult = game.gameWon();
+        if(gameResult){
+            game.winner();
+        } else {
+            game.currentIdx++;
+            game.forvo();
+        }
+
+
+
+        
     }
     
 });
