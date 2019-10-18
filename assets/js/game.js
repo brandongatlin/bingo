@@ -191,6 +191,7 @@ const game = {
         game.buildCard();
         const startBtn = $('<button>').addClass('btn btn-primary').attr('type', 'button').attr('id', 'start-game').text('Start');
         $('#board').append(startBtn);
+
     },
 
     shuffle : function(){
@@ -203,11 +204,16 @@ const game = {
             game.unshuffled.splice(randIdx, 1);
         }
 
-        for (let i = 0; i < origLength; i++) {
-            let randIdx = Math.floor(Math.random() * game.shuffled.length);
-            game.orderToCall.push(game.shuffled[randIdx]);
+        let temp = [];
+        for(let i = 0; i < origLength; i++){
+            temp.push(game.shuffled[i]);
         }
 
+        for (let i = 0; i < origLength; i++) {
+            let randIdx = Math.floor(Math.random() * temp.length);
+            game.orderToCall.push(temp[randIdx]);
+            temp.splice(randIdx, 1);
+        }
     },
 
     getNext : function(){
@@ -263,7 +269,7 @@ const game = {
             //     languageCode = 'es';
             // }
 
-        game.shuffled.forEach(function(item, idx){
+            game.shuffled.forEach(function(item, idx){
             let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[game.languageCode]).attr('data-id', idx + 1);
             $('#card').append(square);
         });
@@ -324,7 +330,6 @@ $('#submit-input').on('click', function(event){
     event.preventDefault();
     game.chosenLanguage = $('#language-select').val();
     game.chosenCategory = $('#category-select').val();
-    console.log(game.chosenCategory, game.chosenLanguage);
     $('#input-form').hide();
     game.start();
 });
@@ -344,7 +349,6 @@ $(document).on('click', '.square', function(){
         game.selected.push($(this).attr('data-id'));
 
         $(this).addClass('disabledImg');
-        console.log(guessedWord, calledWord);
 
         const result = game.checkAnswer(guessedWord, calledWord);
         if(result){
@@ -361,9 +365,6 @@ $(document).on('click', '.square', function(){
             game.forvo();
         }
 
-
-
-        
     }
     
 });
