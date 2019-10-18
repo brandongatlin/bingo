@@ -204,10 +204,10 @@ const game = {
             game.unshuffled.splice(randIdx, 1);
         }
 
-        let temp = [];
-        for(let i = 0; i < origLength; i++){
-            temp.push(game.shuffled[i]);
-        }
+        let temp = game.shuffled.slice();
+        // for(let i = 0; i < origLength; i++){
+        //     temp.push(game.shuffled[i]);
+        // }
 
         for (let i = 0; i < origLength; i++) {
             let randIdx = Math.floor(Math.random() * temp.length);
@@ -302,20 +302,18 @@ const game = {
 
         // Compare winners array to selected array for matches
         for (let i = 0; i < possibleWinners; i++) {
-            let cellExists = 0;
+            var cellExists = 0;
 
-            for (var j = 0; j < 5; j++) {
+            for (let j = 0; j < 5; j++) {
                 if ($.inArray(winners[i][j], game.selected) > -1) {
                     cellExists++;
                 }
             }
 
             // If all 5 winner cells exist in selected array alert success message
-            if (cellExists == 5) {
+            if (cellExists === 5) {
                 return true;
             }
-            return false;
-
         }
     },
 
