@@ -191,7 +191,6 @@ const game = {
         game.buildCard();
         const startBtn = $('<button>').addClass('btn btn-primary').attr('type', 'button').attr('id', 'start-game').text('Start');
         $('#board').append(startBtn);
-
     },
 
     shuffle : function(){
@@ -368,18 +367,11 @@ $(document).on('click', '#start-game', function(){
 });
 
 $(document).on('click', '.tile', function(){
-    // const card = $(this).parent();
     $('.square').removeClass('tile').addClass('disabled');
 
     window.setTimeout(() => {
         $('.square').addClass('tile').removeClass('disabled');
-    }, 3000);
-
-    // document.body.requestPointerLock();
-    // window.setTimeout(function(){
-    //     document.exitPointerLock();
-    // }, 2000);
-
+    }, 2000);
 
         const guessedWord = $(this).attr('data-value');
         const calledWord = game.called;
@@ -395,8 +387,7 @@ $(document).on('click', '.tile', function(){
             $(clicked).addClass('error');
             window.setTimeout(function(){
                 $(clicked).removeClass('error');
-            }, 1500);
-            // make wrong class temporary for the clicked error, but make the answer permenantly wrong and disable that square.
+            }, 1000);
         }
 
         const gameResult = game.gameWon();
