@@ -156,7 +156,7 @@ const data = {
 }
 
 const game = {
-
+    gameRunning : true,
     languages: ['English', 'Español'],
     chosenLanguage: null,
     languageCode: null,
@@ -253,6 +253,7 @@ const game = {
                 console.log("error");
             }
         }); //end ajax call
+
     }, //end forvo fx
 
     buildCard : function(){
@@ -267,7 +268,7 @@ const game = {
             // }
 
             game.shuffled.forEach(function(item, idx){
-            let square = $('<img>').addClass('square').attr('src', item.url).attr('data-value', item[game.languageCode]).attr('data-id', idx + 1);
+            let square = $('<img>').addClass('square tile').attr('src', item.url).attr('data-value', item[game.languageCode]).attr('data-id', idx + 1);
             $('#card').append(square);
         });
     },
@@ -363,24 +364,39 @@ $('#submit-input').on('click', function(event){
 $(document).on('click', '#start-game', function(){
     game.forvoCall();
     $('#input-form').hide();
+    $(this).text('Re-Play');
 });
 
-$(document).on('click', '.square', function(){
-    // const classList = $(this).attr('class').split(' ');
+$(document).on('click', '.tile', function(){
+    // const card = $(this).parent();
+    $('.square').removeClass('tile').addClass('disabled');
 
-    // if(!classList.includes('disabledImg')){
+    window.setTimeout(() => {
+        $('.square').addClass('tile').removeClass('disabled');
+    }, 3000);
+
+    // document.body.requestPointerLock();
+    // window.setTimeout(function(){
+    //     document.exitPointerLock();
+    // }, 2000);
+
+
         const guessedWord = $(this).attr('data-value');
         const calledWord = game.called;
-
-        game.selected.push($(this).attr('data-id'));
-
-        // $(this).addClass('disabledImg');
-
         const result = game.checkAnswer(guessedWord, calledWord);
+
         if(result){
             $(this).addClass('right');
+            game.selected.push($(this).attr('data-id'));
         } else {
-            $(this).addClass('wrong');
+            const clicked = $(this);
+            const realAnswer = `img[data-value='${game.called}']`;
+            $(realAnswer).addClass('wrong').attr('disabled', true);
+            $(clicked).addClass('error');
+            window.setTimeout(function(){
+                $(clicked).removeClass('error');
+            }, 1500);
+            // make wrong class temporary for the clicked error, but make the answer permenantly wrong and disable that square.
         }
 
         const gameResult = game.gameWon();
@@ -390,8 +406,7 @@ $(document).on('click', '.square', function(){
             game.currentIdx++;
             game.forvoCall();
         }
-
-    // }
+        game.gameRunning = false;
     
 });
 
