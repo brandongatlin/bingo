@@ -204,10 +204,7 @@ const game = {
             game.unshuffled.splice(randIdx, 1);
         }
 
-        let temp = game.shuffled.slice();
-        // for(let i = 0; i < origLength; i++){
-        //     temp.push(game.shuffled[i]);
-        // }
+        const temp = game.shuffled.slice();
 
         for (let i = 0; i < origLength; i++) {
             let randIdx = Math.floor(Math.random() * temp.length);
@@ -220,7 +217,7 @@ const game = {
         return game.orderToCall[game.currentIdx][game.languageCode];
     },
 
-    forvo : function(){
+    forvoCall : function(){
         game.called = game.getNext();
         console.log('called', game.called);
         const lang = game.languageCode;
@@ -240,9 +237,9 @@ const game = {
                 const mp3 = data.items[0].pathmp3;
                 const ogg = data.items[0].pathogg;
                 const username = data.items[0].username;
-                const text = `User ${username} is from: ${country}`
+                const text = `User <span id='user-name'>${username}</span> is from: ${country}`
 
-                $("#speaker-text").html(text);
+                $("#message").html(text);
 
                 $("#audio").html(`
                     <audio autoplay>
@@ -319,6 +316,37 @@ const game = {
 
     winner : function(){
         alert('winner');
+        const doOver = game.askToPlayAgain();
+        if(doOver){
+            game.reset();
+        } else {
+            alert('you suck');
+        }
+
+    },
+
+    loser : function(){
+        alert('loser');
+        const doOver = game.askToPlayAgain();
+        if(doOver){
+            game.reset();
+        } else {
+            alert('you suck');
+        }
+    },
+
+    askToPlayAgain : function(){
+        return confirm('Want to play again?');
+    },
+
+    reset : function(){
+        $('#message').text(`Choose your options`);
+        $('#card').empty();
+        $('#start-game').remove();
+        $('#input-form').show();
+        $('#language-select').empty();
+        $('#category-select').empty();
+        game.welcome();
     }
     
 
@@ -333,20 +361,20 @@ $('#submit-input').on('click', function(event){
 });
 
 $(document).on('click', '#start-game', function(){
-    game.forvo();
-    $('#board').empty();
+    game.forvoCall();
+    $('#input-form').hide();
 });
 
 $(document).on('click', '.square', function(){
-    const classList = $(this).attr('class').split(' ');
+    // const classList = $(this).attr('class').split(' ');
 
-    if(!classList.includes('disabledImg')){
+    // if(!classList.includes('disabledImg')){
         const guessedWord = $(this).attr('data-value');
         const calledWord = game.called;
 
         game.selected.push($(this).attr('data-id'));
 
-        $(this).addClass('disabledImg');
+        // $(this).addClass('disabledImg');
 
         const result = game.checkAnswer(guessedWord, calledWord);
         if(result){
@@ -360,10 +388,10 @@ $(document).on('click', '.square', function(){
             game.winner();
         } else {
             game.currentIdx++;
-            game.forvo();
+            game.forvoCall();
         }
 
-    }
+    // }
     
 });
 
