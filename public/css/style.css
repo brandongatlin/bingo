@@ -1,0 +1,44 @@
+html,
+body {
+    background-color: honeydew;
+    padding: 10px;
+}
+
+#message {
+    font-size: 1.5rem;
+}
+
+#card {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.square {
+    border: 1px solid black;
+    height: 100px;
+    width: 100px;
+}
+
+#start-game {
+    margin-left: 50px;
+}
+
+.right {
+    background-color: greenyellow;
+}
+
+.error {
+    background-color: palevioletred;
+}
+
+.wrong {
+    background-color: palevioletred;
+}
+
+#user-name {
+    color: limegreen;
+}
+
+.disabled:hover {
+    cursor: not-allowed;
+}

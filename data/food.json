@@ -1,0 +1,150 @@
+[{
+        "en": "apple juice",
+        "es": "jugo de manzana",
+        "url": "./assets/data/pics/apple-juice.png"
+    },
+
+    {
+        "en": "apple",
+        "es": "manzana",
+        "url": "./assets/data/pics/apple.png"
+    },
+
+    {
+        "en": "banana",
+        "es": "plátano",
+        "url": "./assets/data/pics/banana.png"
+    },
+
+    {
+        "en": "bread",
+        "es": "pan",
+        "url": "./assets/data/pics/bread.png"
+    },
+
+    {
+        "en": "carrots",
+        "es": "zanahoria",
+        "url": "./assets/data/pics/carrots.png"
+    },
+
+    {
+        "en": "cheese",
+        "es": "queso",
+        "url": "./assets/data/pics/cheese.jpg"
+    },
+
+    {
+        "en": "chicken",
+        "es": "pollo",
+        "url": "./assets/data/pics/chicken.png"
+    },
+
+    {
+        "en": "corn",
+        "es": "maíz",
+        "url": "./assets/data/pics/corn.png"
+    },
+
+    {
+        "en": "eggs",
+        "es": "huevos",
+        "url": "./assets/data/pics/eggs.png"
+    },
+
+    {
+        "en": "fish",
+        "es": "pescado",
+        "url": "./assets/data/pics/fish.png"
+    },
+
+    {
+        "en": "french fries",
+        "es": "papas fritas",
+        "url": "./assets/data/pics/fries.gif"
+    },
+
+    {
+        "en": "grapes",
+        "es": "uvas",
+        "url": "./assets/data/pics/grapes.png"
+    },
+
+    {
+        "en": "ice cream",
+        "es": "helado",
+        "url": "./assets/data/pics/icecream.png"
+    },
+
+    {
+        "en": "lettuce",
+        "es": "lechuga",
+        "url": "./assets/data/pics/lettuce.png"
+    },
+
+    {
+        "en": "lobster",
+        "es": "langosta",
+        "url": "./assets/data/pics/lobster.png"
+    },
+
+    {
+        "en": "milk",
+        "es": "leche",
+        "url": "./assets/data/pics/milk.png"
+    },
+
+    {
+        "en": "orange juice",
+        "es": "jugo de naranja",
+        "url": "./assets/data/pics/orange-juice.png"
+    },
+
+    {
+        "en": "orange",
+        "es": "naranja",
+        "url": "./assets/data/pics/orange.png"
+    },
+
+    {
+        "en": "potato",
+        "es": "papas",
+        "url": "./assets/data/pics/potato.png"
+    },
+
+    {
+        "en": "rice",
+        "es": "arroz",
+        "url": "./assets/data/pics/rice.png"
+    },
+
+    {
+        "en": "salad",
+        "es": "ensalada",
+        "url": "./assets/data/pics/salad.png"
+    },
+
+    {
+        "en": "soup",
+        "es": "sopa",
+        "url": "./assets/data/pics/soup.png"
+    },
+
+    {
+        "en": "tomato",
+        "es": "tomate",
+        "url": "./assets/data/pics/tomato.png"
+    },
+
+    {
+        "en": "turkey",
+        "es": "pavo",
+        "url": "./assets/data/pics/turkey.png"
+    },
+
+    {
+        "en": "water",
+        "es": "agua",
+        "url": "./assets/data/pics/water.png"
+    }
+]

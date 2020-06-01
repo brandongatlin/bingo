@@ -1,0 +1,150 @@
+[{
+        "en": "pencil",
+        "es": "lápiz",
+        "url": "./assets/data/pics/supplies/pencil.png"
+    },
+
+    {
+        "en": "pen",
+        "es": "bolígrafo",
+        "url": "./assets/data/pics/supplies/pen.png"
+    },
+
+    {
+        "en": "paper",
+        "es": "papel",
+        "url": "./assets/data/pics/supplies/paper.jpg"
+    },
+
+    {
+        "en": "desk",
+        "es": "pupitre",
+        "url": "./assets/data/pics/supplies/desk.png"
+    },
+
+    {
+        "en": "eraser",
+        "es": "goma",
+        "url": "./assets/data/pics/supplies/eraser.jpg"
+    },
+
+    {
+        "en": "markers",
+        "es": "marcadores",
+        "url": "./assets/data/pics/supplies/markers.jpg"
+    },
+
+    {
+        "en": "pencil sharpener",
+        "es": "sacapuntas",
+        "url": "./assets/data/pics/supplies/sharpener.jpg"
+    },
+
+    {
+        "en": "chalk",
+        "es": "tiza",
+        "url": "./assets/data/pics/supplies/chalk.jpg"
+    },
+
+    {
+        "en": "chalk board",
+        "es": "pizarra",
+        "url": "./assets/data/pics/supplies/chalkboard.jpg"
+    },
+
+    {
+        "en": "book bag",
+        "es": "mochila",
+        "url": "./assets/data/pics/supplies/bookbag.jpg"
+    },
+
+    {
+        "en": "book",
+        "es": "libro",
+        "url": "./assets/data/pics/supplies/book.jpg"
+    },
+
+    {
+        "en": "scissors",
+        "es": "tijeras",
+        "url": "./assets/data/pics/supplies/scissors.jpg"
+    },
+
+    {
+        "en": "hole punch",
+        "es": "perforadora",
+        "url": "./assets/data/pics/supplies/holepunch.jpg"
+    },
+
+    {
+        "en": "notebook",
+        "es": "cuaderno",
+        "url": "./assets/data/pics/supplies/notebook.jpg"
+    },
+
+    {
+        "en": "calculator",
+        "es": "calculadora",
+        "url": "./assets/data/pics/supplies/calculator.png"
+    },
+
+    {
+        "en": "stapler",
+        "es": "grapadora",
+        "url": "./assets/data/pics/supplies/stapler.jpg"
+    },
+
+    {
+        "en": "staples",
+        "es": "grapas",
+        "url": "./assets/data/pics/supplies/staples.jpg"
+    },
+
+    {
+        "en": "tape",
+        "es": "cinta",
+        "url": "./assets/data/pics/supplies/tape.jpg"
+    },
+
+    {
+        "en": "tissue",
+        "es": "pañueolo descartable",
+        "url": "./assets/data/pics/supplies/tissue.jpg"
+    },
+
+    {
+        "en": "projector",
+        "es": "proyector",
+        "url": "./assets/data/pics/supplies/projector.jpg"
+    },
+
+    {
+        "en": "pencil case",
+        "es": "estuche",
+        "url": "./assets/data/pics/supplies/pencilcase.jpg"
+    },
+
+    {
+        "en": "bottle",
+        "es": "botella",
+        "url": "./assets/data/pics/supplies/bottle.jpg"
+    },
+
+    {
+        "en": "bathroom pass",
+        "es": "pase al baño",
+        "url": "./assets/data/pics/supplies/pass.jpg"
+    },
+
+    {
+        "en": "snack",
+        "es": "merienda",
+        "url": "./assets/data/pics/supplies/snack.jpg"
+    },
+
+    {
+        "en": "paper airplane",
+        "es": "avión de papel",
+        "url": "./assets/data/pics/supplies/paper-plane.png"
+    },
+]
